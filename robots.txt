@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tools.workswell.com.au/sitemap.xml
