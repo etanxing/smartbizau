@@ -98,6 +98,20 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-size: 0.95rem;
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+.pagination a { color: var(--accent); }
+.pagination-current { font-weight: 700; color: var(--text); }
+
 /* Article page */
 .article-header {
   padding: 2.5rem 0 1.5rem;
