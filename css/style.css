@@ -110,6 +110,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-size: 0.95rem;
 }
 .pagination a { color: var(--accent); }
+.pagination a:hover { color: var(--accent-hover); text-decoration: none; }
 .pagination-current { font-weight: 700; color: var(--text); }
 
 /* Article page */
