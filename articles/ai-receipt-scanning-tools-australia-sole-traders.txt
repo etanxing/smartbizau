@@ -1,0 +1,7 @@
+Article: ai-receipt-scanning-tools-australia-sole-traders.html
+Generated: 2026-03-24
+Topic keyword: AI receipt scanning tools Australia sole traders
+Why chosen: Receipt and invoice scanning is a top pain point for Australian sole traders at BAS time; no existing article covers this specific workflow or compares Dext, Lightyear, and Ocerra — the three tools most relevant to the Australian market.
+Sources consulted: Ocerra Xero App Store listing and product documentation (ocerra.com), Dext AU product page (dext.com/au), Lightyear AU product page (lightyear.cloud), Solve8 AI invoice processing guide (solve8.com.au/blog/automate-invoice-processing-ai-complete-guide/), ATO record-keeping requirements for GST (ato.gov.au), XBert ABN withholding tax risk documentation (via Purple Quay blog)
+Content approach: Comparison format targeting three distinct buyer personas — sole trader/freelancer (Dext), tradie with purchase orders (Lightyear), multi-entity or non-standard invoice formats (Ocerra).
+Related articles linked: best-ai-accounting-tools-australian-sole-traders-2026

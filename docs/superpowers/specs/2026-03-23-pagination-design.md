@@ -1,11 +1,11 @@
-# Pagination Design — SmartBizAU Homepage
+# Pagination Design — workswell Homepage
 
 **Date:** 2026-03-23
 **Status:** Approved
 
 ## Overview
 
-Add pagination to the SmartBizAU homepage article list. Currently all 15 articles are listed on `index.html`. We will split them across 3 static HTML pages with 5 articles per page.
+Add pagination to the workswell homepage article list. Currently all 15 articles are listed on `index.html`. We will split them across 3 static HTML pages with 5 articles per page.
 
 ## Approach
 
@@ -35,9 +35,9 @@ Each page copies the full `index.html` structure (header, hero, article list, fo
 
 | Page | `<title>` | `og:title` |
 |---|---|---|
-| `index.html` | SmartBizAU - AI Tools and Automation for Australian Small Business | (unchanged) |
-| `page-2.html` | SmartBizAU - Page 2 | SmartBizAU - AI Tools for Australian Small Business - Page 2 |
-| `page-3.html` | SmartBizAU - Page 3 | SmartBizAU - AI Tools for Australian Small Business - Page 3 |
+| `index.html` | workswell - AI Tools and Automation for Australian Small Business | (unchanged) |
+| `page-2.html` | workswell - Page 2 | workswell - AI Tools for Australian Small Business - Page 2 |
+| `page-3.html` | workswell - Page 3 | workswell - AI Tools for Australian Small Business - Page 3 |
 
 `og:description` on pages 2 and 3 matches the base description on `index.html`. `og:type` remains `website`.
 

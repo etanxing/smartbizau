@@ -38,12 +38,12 @@ Create `~/.claude/skills/generate-articles/SKILL.md` with this exact content:
 ````markdown
 ---
 name: generate-articles
-description: Use when the user runs /generate-articles N — generates N new SEO articles for the SmartBizAU site (tools.workswell.com.au), rebuilds pagination pages, updates sitemap.xml, and commits + pushes to git for automatic Cloudflare deployment. N must be a positive integer.
+description: Use when the user runs /generate-articles N — generates N new SEO articles for the workswell site (tools.workswell.com.au), rebuilds pagination pages, updates sitemap.xml, and commits + pushes to git for automatic Cloudflare deployment. N must be a positive integer.
 ---
 
 # Generate Articles
 
-Generates N new SEO articles for SmartBizAU, rebuilds all pagination pages, updates the sitemap, commits and pushes to git. Cloudflare auto-deploys on push.
+Generates N new SEO articles for workswell, rebuilds all pagination pages, updates the sitemap, commits and pushes to git. Cloudflare auto-deploys on push.
 
 **Working directory:** The `smartbizau-site` git repository.
 
@@ -88,7 +88,7 @@ Invent N new long-tail keyword topics targeting Australian small business owners
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{TITLE} | SmartBizAU</title>
+  <title>{TITLE} | workswell</title>
   <meta name="description" content="{META_DESCRIPTION — max 160 characters}">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://tools.workswell.com.au/articles/{SLUG}.html">
@@ -99,7 +99,7 @@ Invent N new long-tail keyword topics targeting Australian small business owners
     "@type": "Article",
     "headline": "{TITLE}",
     "datePublished": "{YYYY-MM-DD}",
-    "author": {"@type": "Organization", "name": "SmartBizAU"}
+    "author": {"@type": "Organization", "name": "workswell"}
   }
   </script>
 </head>
@@ -107,7 +107,7 @@ Invent N new long-tail keyword topics targeting Australian small business owners
 
 <header class="site-header">
   <div class="inner">
-    <a href="/" class="logo">SmartBizAU</a>
+    <a href="/" class="logo">workswell</a>
     <nav><a href="/">Home</a><a href="/#articles">Guides</a></nav>
   </div>
 </header>
@@ -129,7 +129,7 @@ Invent N new long-tail keyword topics targeting Australian small business owners
 </main>
 
 <footer class="site-footer">
-  &copy; 2026 SmartBizAU. Built for Australian small business owners and freelancers.
+  &copy; 2026 workswell. Built for Australian small business owners and freelancers.
 </footer>
 
 </body>
@@ -182,12 +182,12 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartBizAU - Page {N}</title>
+  <title>workswell - Page {N}</title>
   <meta name="description" content="Practical guides on using AI tools to save time and money for Australian small businesses, freelancers, and sole traders.">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="J-lIb95Na1n-22m5Fvz7U8FnxNuumGC6ErueVpvU5yY" />
   <link rel="canonical" href="https://tools.workswell.com.au/page-{N}.html">
-  <meta property="og:title" content="SmartBizAU - AI Tools for Australian Small Business - Page {N}">
+  <meta property="og:title" content="workswell - AI Tools for Australian Small Business - Page {N}">
   <meta property="og:description" content="Practical guides on using AI tools to save time and money for Australian small businesses.">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="/css/style.css">
@@ -195,7 +195,7 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "SmartBizAU",
+    "name": "workswell",
     "url": "https://tools.workswell.com.au",
     "description": "AI tools and automation guides for Australian small businesses"
   }
@@ -205,7 +205,7 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
 
 <header class="site-header">
   <div class="inner">
-    <a href="/" class="logo">SmartBizAU</a>
+    <a href="/" class="logo">workswell</a>
     <nav>
       <a href="/">Home</a>
       <a href="#articles">Guides</a>
@@ -226,7 +226,7 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
 </main>
 
 <footer class="site-footer">
-  &copy; 2026 SmartBizAU. Built for Australian small business owners and freelancers.
+  &copy; 2026 workswell. Built for Australian small business owners and freelancers.
 </footer>
 
 </body>

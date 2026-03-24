@@ -1,11 +1,11 @@
 ---
 name: generate-articles
-description: Use when the user runs /generate-articles N — generates N new SEO articles for the SmartBizAU site (tools.workswell.com.au), rebuilds pagination pages, and updates sitemap.xml. N must be a positive integer.
+description: Use when the user runs /generate-articles N — generates N new SEO articles for the workswell site (tools.workswell.com.au), rebuilds pagination pages, and updates sitemap.xml. N must be a positive integer.
 ---
 
 # Generate Articles
 
-Generates N new SEO articles for SmartBizAU, rebuilds all pagination pages, updates the sitemap. Does NOT commit or push — files are left staged for the user to review.
+Generates N new SEO articles for workswell, rebuilds all pagination pages, updates the sitemap. Does NOT commit or push — files are left staged for the user to review.
 
 **Working directory:** The `smartbizau-site` git repository.
 
@@ -67,6 +67,45 @@ Write each as a complete HTML file and save to `articles/<slug>.html`.
 - Real tool names, practical advice — no fluff or generic AI hype
 - End with a `<div class="cta-box">` cross-linking to a related article already on the site
 
+**Content format — choose the best fit for the topic:**
+
+| Article type | Best format |
+|---|---|
+| Tool comparison (A vs B vs C) | Comparison `<table>` + short prose per section |
+| How-to / tutorial | Numbered `<ol>` steps; add `<pre><code>` for any CLI/API/config content |
+| Tool roundup (top 5 tools) | `<h2>` per tool + brief description; optional summary table at the end |
+| Explainer / guide | Prose + `<blockquote>` for key stats or ATO quotes |
+| Technical setup | `<pre><code>` blocks with realistic example values (API keys redacted as `YOUR_KEY`) |
+
+**Comparison table format:**
+```html
+<table>
+  <thead>
+    <tr><th>Tool</th><th>AUD Pricing</th><th>Xero Integration</th><th>Best For</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Tool A</td><td>$X/mo</td><td>Yes</td><td>Sole traders</td></tr>
+    <tr><td>Tool B</td><td>$Y/mo</td><td>Partial</td><td>Teams</td></tr>
+  </tbody>
+</table>
+```
+
+**Code block format** (use for CLI commands, API calls, config snippets):
+```html
+<pre><code>curl -X POST https://api.example.com/invoice \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{"amount": 1100, "gst": true}'</code></pre>
+```
+
+**Blockquote format** (use for ATO guidance, key stats, direct quotes):
+```html
+<blockquote>
+  <p>"Businesses with under $10M turnover can use simplified GST accounting methods." — ATO</p>
+</blockquote>
+```
+
+**Images:** Only include an `<img>` if you have a real, publicly accessible URL. Do not use placeholder URLs. If you don't have a real image URL, skip images entirely — a text article is better than broken images.
+
 **Use this HTML template exactly — do not deviate:**
 
 ```html
@@ -75,7 +114,7 @@ Write each as a complete HTML file and save to `articles/<slug>.html`.
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{TITLE} | SmartBizAU</title>
+  <title>{TITLE} | workswell</title>
   <meta name="description" content="{META_DESCRIPTION — max 160 characters}">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://tools.workswell.com.au/articles/{SLUG}.html">
@@ -86,7 +125,7 @@ Write each as a complete HTML file and save to `articles/<slug>.html`.
     "@type": "Article",
     "headline": "{TITLE}",
     "datePublished": "{YYYY-MM-DD}",
-    "author": {"@type": "Organization", "name": "SmartBizAU"}
+    "author": {"@type": "Organization", "name": "workswell"}
   }
   </script>
 </head>
@@ -94,7 +133,7 @@ Write each as a complete HTML file and save to `articles/<slug>.html`.
 
 <header class="site-header">
   <div class="inner">
-    <a href="/" class="logo">SmartBizAU</a>
+    <a href="/" class="logo">workswell</a>
     <nav><a href="/">Home</a><a href="/#articles">Guides</a></nav>
   </div>
 </header>
@@ -116,7 +155,7 @@ Write each as a complete HTML file and save to `articles/<slug>.html`.
 </main>
 
 <footer class="site-footer">
-  &copy; 2026 SmartBizAU. Built for Australian small business owners and freelancers.
+  &copy; 2026 workswell. Built for Australian small business owners and freelancers.
 </footer>
 
 </body>
@@ -141,7 +180,8 @@ Generated: {YYYY-MM-DD}
 Topic keyword: {THE LONG-TAIL KEYWORD THIS ARTICLE TARGETS}
 Why chosen: {One sentence explaining why this topic was selected — gap in existing coverage, keyword opportunity, etc.}
 Sources consulted: {List specific references used — ATO pages, ASIC docs, tool documentation, Reddit threads, newsletter items, etc. If web research was unavailable, write "General knowledge — Australian small business AI tools context"}
-Content approach: {One sentence describing the angle taken — e.g. "Comparison format", "How-to guide", "Explainer with tool recommendations"}
+Content approach: {One sentence describing the angle taken — e.g. "Comparison format with table", "How-to guide with code blocks", "Explainer with blockquotes", "Tool roundup with summary table"}
+Content formats used: {List elements used beyond plain prose — e.g. "comparison table", "code blocks", "blockquote", "numbered steps", "none (prose only)"}
 Related articles linked: {Slug(s) of the article(s) referenced in the CTA box}
 ```
 
@@ -185,12 +225,12 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartBizAU - Page {N}</title>
+  <title>workswell - Page {N}</title>
   <meta name="description" content="Practical guides on using AI tools to save time and money for Australian small businesses, freelancers, and sole traders.">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="J-lIb95Na1n-22m5Fvz7U8FnxNuumGC6ErueVpvU5yY" />
   <link rel="canonical" href="https://tools.workswell.com.au/page-{N}.html">
-  <meta property="og:title" content="SmartBizAU - AI Tools for Australian Small Business - Page {N}">
+  <meta property="og:title" content="workswell - AI Tools for Australian Small Business - Page {N}">
   <meta property="og:description" content="Practical guides on using AI tools to save time and money for Australian small businesses.">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="/css/style.css">
@@ -198,7 +238,7 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "SmartBizAU",
+    "name": "workswell",
     "url": "https://tools.workswell.com.au",
     "description": "AI tools and automation guides for Australian small businesses"
   }
@@ -208,7 +248,7 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
 
 <header class="site-header">
   <div class="inner">
-    <a href="/" class="logo">SmartBizAU</a>
+    <a href="/" class="logo">workswell</a>
     <nav>
       <a href="/">Home</a>
       <a href="#articles">Guides</a>
@@ -229,7 +269,7 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
 </main>
 
 <footer class="site-footer">
-  &copy; 2026 SmartBizAU. Built for Australian small business owners and freelancers.
+  &copy; 2026 workswell. Built for Australian small business owners and freelancers.
 </footer>
 
 </body>

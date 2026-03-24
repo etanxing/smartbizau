@@ -116,9 +116,9 @@ git commit -m "feat: trim index.html to 5 articles, add page 1 pagination nav"
 
 Copy the full structure of `index.html` as a starting point, then make these changes:
 
-**`<title>`:** `SmartBizAU - Page 2`
+**`<title>`:** `workswell - Page 2`
 
-**`og:title`:** `SmartBizAU - AI Tools for Australian Small Business - Page 2`
+**`og:title`:** `workswell - AI Tools for Australian Small Business - Page 2`
 
 **`og:description`:** `Practical guides on using AI tools to save time and money for Australian small businesses.`
 
@@ -193,9 +193,9 @@ git commit -m "feat: create page-2.html with articles 6-10 and pagination nav"
 
 Copy `page-2.html` as a starting point, then make these changes:
 
-**`<title>`:** `SmartBizAU - Page 3`
+**`<title>`:** `workswell - Page 3`
 
-**`og:title`:** `SmartBizAU - AI Tools for Australian Small Business - Page 3`
+**`og:title`:** `workswell - AI Tools for Australian Small Business - Page 3`
 
 **`<link rel="canonical">`:** `https://tools.workswell.com.au/page-3.html`
 

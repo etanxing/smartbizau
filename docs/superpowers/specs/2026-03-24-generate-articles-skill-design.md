@@ -78,7 +78,7 @@ Claude invents N new long-tail keyword topics targeting Australian small busines
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{TITLE} | SmartBizAU</title>
+  <title>{TITLE} | workswell</title>
   <meta name="description" content="{META_DESCRIPTION}">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://tools.workswell.com.au/articles/{SLUG}.html">
@@ -89,7 +89,7 @@ Claude invents N new long-tail keyword topics targeting Australian small busines
     "@type": "Article",
     "headline": "{TITLE}",
     "datePublished": "{YYYY-MM-DD}",
-    "author": {"@type": "Organization", "name": "SmartBizAU"}
+    "author": {"@type": "Organization", "name": "workswell"}
   }
   </script>
 </head>
@@ -97,7 +97,7 @@ Claude invents N new long-tail keyword topics targeting Australian small busines
 
 <header class="site-header">
   <div class="inner">
-    <a href="/" class="logo">SmartBizAU</a>
+    <a href="/" class="logo">workswell</a>
     <nav><a href="/">Home</a><a href="/#articles">Guides</a></nav>
   </div>
 </header>
@@ -119,7 +119,7 @@ Claude invents N new long-tail keyword topics targeting Australian small busines
 </main>
 
 <footer class="site-footer">
-  &copy; 2026 SmartBizAU. Built for Australian small business owners and freelancers.
+  &copy; 2026 workswell. Built for Australian small business owners and freelancers.
 </footer>
 
 </body>
@@ -157,12 +157,12 @@ Rewrite the entire file using the pagination page template below. Create new pag
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartBizAU - Page {N}</title>
+  <title>workswell - Page {N}</title>
   <meta name="description" content="Practical guides on using AI tools to save time and money for Australian small businesses, freelancers, and sole traders.">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="J-lIb95Na1n-22m5Fvz7U8FnxNuumGC6ErueVpvU5yY" />
   <link rel="canonical" href="https://tools.workswell.com.au/page-{N}.html">
-  <meta property="og:title" content="SmartBizAU - AI Tools for Australian Small Business - Page {N}">
+  <meta property="og:title" content="workswell - AI Tools for Australian Small Business - Page {N}">
   <meta property="og:description" content="Practical guides on using AI tools to save time and money for Australian small businesses.">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="/css/style.css">
@@ -170,7 +170,7 @@ Rewrite the entire file using the pagination page template below. Create new pag
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "SmartBizAU",
+    "name": "workswell",
     "url": "https://tools.workswell.com.au",
     "description": "AI tools and automation guides for Australian small businesses"
   }
@@ -180,7 +180,7 @@ Rewrite the entire file using the pagination page template below. Create new pag
 
 <header class="site-header">
   <div class="inner">
-    <a href="/" class="logo">SmartBizAU</a>
+    <a href="/" class="logo">workswell</a>
     <nav>
       <a href="/">Home</a>
       <a href="#articles">Guides</a>
@@ -201,7 +201,7 @@ Rewrite the entire file using the pagination page template below. Create new pag
 </main>
 
 <footer class="site-footer">
-  &copy; 2026 SmartBizAU. Built for Australian small business owners and freelancers.
+  &copy; 2026 workswell. Built for Australian small business owners and freelancers.
 </footer>
 
 </body>

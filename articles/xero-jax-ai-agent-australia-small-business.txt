@@ -1,0 +1,7 @@
+Article: xero-jax-ai-agent-australia-small-business.html
+Generated: 2026-03-24
+Topic keyword: Xero JAX AI agent Australian small business
+Why chosen: Xero JAX launched in Australia first at Xerocon Brisbane September 2025 and is the most significant new AI feature from the dominant Australian accounting platform — not covered by existing articles, which only address Xero Analytics Plus.
+Sources consulted: Xero JAX announcement (xero.com/us/media-releases/xeros-ai-financial-superagent-jax-launches-powerful-new-features/), Xerocon Brisbane 2025 blog (blog.xero.com/product-updates/xerocon-2025-new-features-announcement/), CFO Tech AU coverage of JAX expansion (cfotech.com.au/story/xero-expands-jax-ai-agent-to-boost-automation-for-small-firms)
+Content approach: Practical explainer covering what JAX does today (reconciliation, financial queries, invoice drafting) vs what is still coming, with Australian-specific context around BAS and GST terminology.
+Related articles linked: ai-cash-flow-forecasting-australia

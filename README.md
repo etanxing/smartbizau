@@ -1,4 +1,4 @@
-# SmartBizAU - AI Tools for Australian Small Business
+# workswell - AI Tools for Australian Small Business
 
 ## Why This Project
 

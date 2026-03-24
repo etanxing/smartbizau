@@ -1,11 +1,11 @@
 ---
 name: draft-linkedin-post
-description: Use when the user runs /draft-linkedin-post — drafts a LinkedIn company page post promoting an article from tools.workswell.com.au (SmartBizAU). Optionally accepts an article slug or title as an argument to target a specific article; if none given, picks the best article from the site automatically.
+description: Use when the user runs /draft-linkedin-post — drafts a LinkedIn company page post promoting an article from tools.workswell.com.au (workswell). Optionally accepts an article slug or title as an argument to target a specific article; if none given, picks the best article from the site automatically.
 ---
 
 # Draft LinkedIn Post
 
-Drafts a LinkedIn company page post promoting an article from SmartBizAU (tools.workswell.com.au).
+Drafts a LinkedIn company page post promoting an article from workswell (tools.workswell.com.au).
 
 **Working directory:** The `smartbizau-site` git repository.
 
