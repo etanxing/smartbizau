@@ -1,0 +1,10 @@
+node_modules/
+.claude/
+.git/
+docs/
+articles/*.txt
+*.md
+package.json
+package-lock.json
+bun.lockb
+.gitignore
