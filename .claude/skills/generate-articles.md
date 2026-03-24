@@ -1,11 +1,11 @@
 ---
 name: generate-articles
-description: Use when the user runs /generate-articles N — generates N new SEO articles for the SmartBizAU site (tools.workswell.com.au), rebuilds pagination pages, updates sitemap.xml, and commits + pushes to git for automatic Cloudflare deployment. N must be a positive integer.
+description: Use when the user runs /generate-articles N — generates N new SEO articles for the SmartBizAU site (tools.workswell.com.au), rebuilds pagination pages, and updates sitemap.xml. N must be a positive integer.
 ---
 
 # Generate Articles
 
-Generates N new SEO articles for SmartBizAU, rebuilds all pagination pages, updates the sitemap, commits and pushes to git. Cloudflare auto-deploys on push.
+Generates N new SEO articles for SmartBizAU, rebuilds all pagination pages, updates the sitemap. Does NOT commit or push — files are left staged for the user to review.
 
 **Working directory:** The `smartbizau-site` git repository.
 
@@ -26,9 +26,34 @@ Scan `articles/*.html`. For each file, extract:
 
 Keep this list. Use it to avoid duplicate topics and to rebuild pagination.
 
-## Step 3 — Generate N Articles
+## Step 3 — Research Current AI Tool Trends
 
-Invent N new long-tail keyword topics targeting Australian small business owners that are NOT already covered by existing articles. Write each as a complete HTML file and save to `articles/<slug>.html`.
+Before picking topics, run the following searches to ground articles in real, current tools and user pain points. Skim results for: recently released tools, specific pain points Australian small business owners mention, and any AI features launched in the last 3 months.
+
+**Run these searches (use WebSearch):**
+1. `new AI tools Australian small business 2026`
+2. `AI tools sole trader freelancer Australia reddit`
+3. `"The Rundown AI" OR "Ben's Bites" AI tools small business site:rundown.ai OR bensbites.co`
+4. `site:reddit.com/r/AusFinance OR site:reddit.com/r/smallbusiness AI tools invoicing payroll BAS`
+5. One search specific to a gap in existing coverage (e.g. if no article covers tradies + scheduling, search `AI scheduling tools tradies Australia`)
+
+**From the results, extract a shortlist of candidate topics:**
+- Tool names that are real and currently available
+- Pain points that appear repeatedly (same complaint = real demand)
+- Any Australian-specific angle (ATO integration, ABN lookup, GST handling, Xero/MYOB compatibility)
+
+Discard: US-only tools, vague "AI will transform X" content, anything already covered by existing articles.
+
+**If searches return no useful results** (paywalled, blocked, empty): fall back to generating topics from training knowledge, noting "Web research unavailable" in the generation notes.
+
+## Step 4 — Generate N Articles
+
+Pick N topics from the research shortlist (or from training knowledge if research failed). Prioritise topics that are:
+1. Grounded in a specific real tool or workflow
+2. Narrowly targeted (one task, one audience)
+3. Not a duplicate or near-duplicate of any existing article
+
+Write each as a complete HTML file and save to `articles/<slug>.html`.
 
 **Topic requirements:**
 - Long-tail keywords targeting Australian sole traders, small business owners, freelancers, or tradies
@@ -106,7 +131,23 @@ Invent N new long-tail keyword topics targeting Australian small business owners
 
 **Slug rules:** lowercase, hyphens only, no special characters, descriptive of the topic.
 
-## Step 4 — Rebuild Pagination Pages
+## Step 5 — Write Generation Notes
+
+For each article generated in Step 3, create a companion file `articles/<slug>.txt` with the following content:
+
+```
+Article: {SLUG}.html
+Generated: {YYYY-MM-DD}
+Topic keyword: {THE LONG-TAIL KEYWORD THIS ARTICLE TARGETS}
+Why chosen: {One sentence explaining why this topic was selected — gap in existing coverage, keyword opportunity, etc.}
+Sources consulted: {List specific references used — ATO pages, ASIC docs, tool documentation, Reddit threads, newsletter items, etc. If web research was unavailable, write "General knowledge — Australian small business AI tools context"}
+Content approach: {One sentence describing the angle taken — e.g. "Comparison format", "How-to guide", "Explainer with tool recommendations"}
+Related articles linked: {Slug(s) of the article(s) referenced in the CTA box}
+```
+
+Save one `.txt` per article. These files are for human review and are not deployed.
+
+## Step 6 — Rebuild Pagination Pages
 
 1. Compile the full article list: read slug, title, date, excerpt from every file in `articles/*.html` (old + new)
 2. Sort by `datePublished` descending (newest first)
@@ -195,7 +236,7 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
 </html>
 ```
 
-## Step 5 — Update Sitemap
+## Step 7 — Update Sitemap
 
 Rewrite `sitemap.xml` completely. Order:
 1. Homepage `https://tools.workswell.com.au/` — priority 1.0
@@ -215,13 +256,4 @@ All `<lastmod>` values = today's date as `YYYY-MM-DD`.
 </urlset>
 ```
 
-## Step 6 — Commit and Push
-
-```bash
-git add articles/ index.html page-*.html sitemap.xml
-git add -u
-git commit -m "feat: add {N} articles ({YYYY-MM-DD})"
-git push
-```
-
-Cloudflare auto-deploys on push. Done.
+Done. All files are written but not staged or committed — the user reviews and commits manually.
