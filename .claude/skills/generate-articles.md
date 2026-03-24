@@ -77,7 +77,7 @@ Invent N new long-tail keyword topics targeting Australian small business owners
 <main class="container">
   <div class="article-header">
     <h1>{TITLE}</h1>
-    <p class="meta">{Month DD, YYYY} &middot; {N} min read</p>
+    <p class="meta">{Month DD, YYYY} &middot; {READ_TIME} min read</p>
   </div>
 
   <div class="article-body">
@@ -124,7 +124,7 @@ Edit only the `<ul class="article-list">` and `<nav class="pagination">` blocks 
 ```html
     <li>
       <h2><a href="/articles/{SLUG}.html">{TITLE}</a></h2>
-      <p class="meta">{Month DD, YYYY} &middot; {N} min read</p>
+      <p class="meta">{Month DD, YYYY} &middot; {READ_TIME} min read</p>
       <p class="excerpt">{EXCERPT}</p>
     </li>
 ```
