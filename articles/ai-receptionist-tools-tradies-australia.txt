@@ -1,0 +1,7 @@
+Article: ai-receptionist-tools-tradies-australia.html
+Generated: 2026-03-25
+Topic keyword: AI receptionist tools Australian tradies missed calls
+Why chosen: Existing tradies article covers quoting/scheduling/invoicing — the missed calls / lead leakage pain point for tradies is a distinct gap, and Sophiie.ai and Johnni.ai are AU-specific products not covered elsewhere on the site.
+Sources consulted: Sophiie.ai product pages and industry blog (sophiie.ai), ServiceScale AI for tradies guide (servicescale.com.au), Kynection job scheduling tools guide (kynection.com.au), research data on missed call rates from ServiceScale Build-it Industry Report 2026.
+Content approach: Comparison format — Sophiie.ai vs Johnni.ai vs ServiceM8 native features, with a how-to numbered steps section for setup.
+Related articles linked: ai-tools-tradies-contractors-australia

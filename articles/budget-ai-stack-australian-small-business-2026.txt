@@ -1,0 +1,7 @@
+Article: budget-ai-stack-australian-small-business-2026.html
+Generated: 2026-03-25
+Topic keyword: budget AI stack Australian small business $50 per month
+Why chosen: No existing article targets the cost-conscious angle — all other articles review tools by category. A curated "total spend under $50 AUD" guide addresses a high-volume pain point (cost anxiety around AI adoption) and is highly shareable and bookmarkable.
+Sources consulted: ClickBiz AU budget AI tools guide 2026 (clickbiz.com.au), roi.com.au AI marketing cost data for Australia 2026, Canva Pro AUD pricing (canva.com), Claude Pro AUD pricing (anthropic.com), Zapier free tier documentation.
+Content approach: Curated stack recommendation with comparison table of costs, plus "what you don't need" section to build trust and reduce decision paralysis.
+Related articles linked: best-ai-accounting-tools-australian-sole-traders-2026

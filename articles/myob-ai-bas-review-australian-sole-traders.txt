@@ -1,0 +1,7 @@
+Article: myob-ai-bas-review-australian-sole-traders.html
+Generated: 2026-03-25
+Topic keyword: MYOB AI BAS tool Australian sole traders review
+Why chosen: MYOB launched specific AI BAS, Smart Reconciliation, and Smart Invoice Reminder features in 2026 — these are real, live products not covered by the existing general BAS lodgement article, which covers workflow approaches across multiple tools. MYOB holds ~20-25% AU market share, making a product-specific deep-dive high-value.
+Sources consulted: MYOB AI BAS software product page (myob.com/au/products/ai-bas-software), CFO Tech MYOB AI launch article (cfotech.com.au), BOZ accounting workflows article 2026 (boz.com.au), Latitude Accountants Xero vs MYOB comparison 2026 (latitudeaccountants.com.au).
+Content approach: Honest product review format — what each feature does, what it doesn't do, and a clear recommendation on whether to switch vs stay.
+Related articles linked: automate-bas-lodgement-ai-tools-2026
