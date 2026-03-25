@@ -30,7 +30,7 @@
 <main class="container">
   <div class="article-header">
     <h1>How to Use ChatGPT or Claude as a Proposal Generator for Your Small Business</h1>
-    <p class="meta">March 25, 2026 &middot; 5 min read</p>
+    <p class="meta">March 25, 2026 &middot; 6 min read</p>
   </div>
 
   <div class="article-body">
@@ -40,15 +40,27 @@
 
     <h2>What You'll Need</h2>
 
-    <p>You need a <a href="https://chatgpt.com">ChatGPT account</a> (the free tier works; Plus gives you GPT-4o which is noticeably better) or a <a href="https://claude.ai">Claude account</a> (also free with daily limits). Both work well for this. Claude tends to produce more natural, less "corporate AI" writing; GPT-4o is slightly faster and better at structured tables and pricing breakdowns. Try both and see which output you prefer.</p>
+    <p>You need a <a href="https://chatgpt.com">ChatGPT account</a> (the free tier gives access to GPT-4o with usage limits; Plus removes the limits) or a <a href="https://claude.ai">Claude account</a> (also free with daily limits). Both work well for this. Claude tends to produce more natural, less "corporate AI" writing; GPT-4o is slightly faster and better at structured tables and pricing breakdowns. Try both and see which output you prefer.</p>
 
     <p>You also need one or two of your past proposals as reference material — something you were happy with that got accepted. You'll paste these into the chat to show the AI your style.</p>
 
-    <h2>Step 1: Build a Reusable System Prompt</h2>
+    <h2>ChatGPT Option: Build a Custom GPT</h2>
 
-    <p>The key to consistent proposals is a system prompt — a set of instructions you paste at the start of every new chat before you give it the client details. Write this once, save it in a note or doc, and reuse it every time.</p>
+    <p>If you use ChatGPT, the best approach isn't to paste instructions every time — it's to build a <strong>Custom GPT</strong> once, and it lives in your sidebar permanently. You open it, type the client brief, and it already knows everything about your business.</p>
 
-    <p>Here's a starting template you can customise:</p>
+    <p>To create one: go to <a href="https://chatgpt.com/gpts/mine">chatgpt.com/gpts/mine</a> → Create → Configure. Give it a name ("My Proposal Writer"), then fill in the Instructions field with your setup (see the prompt template below). Under Knowledge, upload 1–2 of your past proposals as PDF or Word files — the GPT will reference them for tone and structure. Save it as private. That's it.</p>
+
+    <p>From then on, click your GPT, type the client brief, and get a draft. No setup, no pasting. <strong>Note: creating Custom GPTs requires ChatGPT Plus ($20 USD/month).</strong> Free users can use existing public GPTs but can't build their own.</p>
+
+    <h2>Claude Option: Projects or a Reusable Prompt</h2>
+
+    <p>Claude has <strong>Projects</strong> — available on the free plan with limits, and fully on Pro. A Project lets you save a set of instructions and upload files (like your past proposals) that persist across every conversation. It's the same idea as a Custom GPT: open the Project, type the client brief, done.</p>
+
+    <p>If you'd rather not set up a Project, the manual fallback works fine: write your instructions once, save them in a note or doc, and paste at the start of each new chat. Takes about 10 seconds.</p>
+
+    <h2>The Prompt Template (use for either)</h2>
+
+    <p>Whether you're configuring a Custom GPT or saving a Claude system prompt, use this as your starting point:</p>
 
     <pre><code>You are a proposal writer for [YOUR BUSINESS NAME], a [TYPE OF BUSINESS] based in [CITY], Australia.
 
@@ -71,11 +83,11 @@ Keep it to one page if possible. Use my tone — here's an example of a proposal
 
 [PASTE ONE OF YOUR PAST PROPOSALS HERE]</code></pre>
 
-    <p>Fill in the brackets, paste in your past proposal, and save the whole thing. This is your template.</p>
+    <p>Fill in the brackets and paste a past proposal. For Custom GPTs, put this in the Instructions field and upload the proposal as a Knowledge file instead of pasting it inline.</p>
 
-    <h2>Step 2: Generate a Proposal in Minutes</h2>
+    <h2>Generate a Proposal in Minutes</h2>
 
-    <p>When you have a new client to quote, open a fresh chat, paste your system prompt, then add the client brief underneath. The brief can be rough — just the key details:</p>
+    <p>When you have a new client to quote, open your Custom GPT or Claude Project (or a fresh chat with your system prompt pasted in), then give it the client brief. Keep it rough — just the key details:</p>
 
     <pre><code>New proposal needed:
 
@@ -88,7 +100,7 @@ Extra context: They're a referral from a past client, so keep the tone warm.</co
 
     <p>Hit enter. In 30–60 seconds you'll have a full draft. It won't be perfect — maybe the pricing is slightly off, or there's a line that doesn't sound like you — but it'll be 80% there. A few edits and it's ready to send.</p>
 
-    <h2>Step 3: Tune It Until It Sounds Like You</h2>
+    <h2>Tune It Until It Sounds Like You</h2>
 
     <p>The first few proposals will need more editing than later ones. Each time you edit, you can feed the correction back into the prompt: "The opening was too formal — in future, start by acknowledging the specific problem they mentioned." Over time your system prompt gets tighter and the drafts need less work.</p>
 
@@ -108,10 +120,10 @@ Extra context: They're a referral from a past client, so keep the tone warm.</co
 
     <h2>How Much Does It Cost?</h2>
 
-    <p>ChatGPT Free: $0/month — access to GPT-4o mini, works fine for proposals<br>
-    ChatGPT Plus: $28/month AUD — GPT-4o, faster, better output quality<br>
-    Claude Free: $0/month — generous daily limit, good for a handful of proposals per week<br>
-    Claude Pro: $28/month AUD — no daily limits, priority access</p>
+    <p>ChatGPT Free: $0/month — GPT-4o with usage limits, works fine for a handful of proposals per week<br>
+    ChatGPT Plus: ~$32/month AUD (USD $20) — no usage limits, required to create Custom GPTs<br>
+    Claude Free: $0/month — daily limits, Projects included with some restrictions<br>
+    Claude Pro: ~$32/month AUD (USD $20) — no daily limits, full Projects access</p>
 
     <p>For most small business owners, the free tiers are enough to start. If you're writing more than 5–6 proposals a week, a paid plan removes the friction.</p>
 
