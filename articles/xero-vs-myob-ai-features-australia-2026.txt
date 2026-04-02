@@ -1,0 +1,8 @@
+Article: xero-vs-myob-ai-features-australia-2026.html
+Generated: 2026-04-02
+Topic keyword: xero vs myob AI features Australian small business 2026
+Why chosen: Gap in existing coverage — the xero-jax article covers JAX specifically, but no article directly compares Xero and MYOB AI capabilities side-by-side, which is a high-intent search for users deciding between platforms.
+Sources consulted: Xero pricing page (xero.com/au/pricing-plans), MYOB pricing page (myob.com/au/pricing), MYOB AI products page (myob.com/au/ai-accounting), MYOB AI BAS press release (myob.com/au/press-releases), Xero AI reconciliation blog post, Palladium Financial Group Xero pricing guide 2026, boz.com.au AI in Xero/MYOB workflows 2026
+Content approach: Side-by-side comparison with table, covering reconciliation, BAS, invoicing, cash flow, and pricing for both platforms.
+Content formats used: comparison table, tip box
+Related articles linked: xero-jax-ai-agent-australia-small-business

@@ -30,17 +30,43 @@ Keep this list. Use it to avoid duplicate topics and to rebuild pagination.
 
 Before picking topics, run the following searches to ground articles in real, current tools and user pain points. Skim results for: recently released tools, specific pain points Australian small business owners mention, and any AI features launched in the last 3 months.
 
-**Run these searches (use WebSearch):**
+### Primary sources to monitor
+
+Fetch recent content from these sources to identify trending AI tools and developments relevant to small business:
+
+**Company blogs** (model releases, new product features):
+- OpenAI, Anthropic, Google AI, DeepMind, Meta Engineering, NVIDIA
+
+**Tech media** (product launches, industry analysis):
+- MIT Technology Review, The Verge, TechCrunch, Ars Technica, Wired, 404 Media
+
+**Community & research** (practitioner signal, cutting-edge papers):
+- Hacker News (AI-related discussions), HuggingFace daily trending papers
+
+**Industry newsletters** (curated AI news, editorial perspective):
+- Import AI (Jack Clark), Ben's Bites, Latent Space, Interconnects (Nathan Lambert), AI Snake Oil (Arvind Narayanan), One Useful Thing (Ethan Mollick)
+
+**Independent blogs** (deep dives, tool reviews):
+- Simon Willison's Weblog
+
+Coverage to watch for: model releases, AI agents, safety & alignment, industry moves, developer tools, research frontiers, product applications, open-source ecosystem, policy & regulation, workforce impact.
+
+Editorial filter: pick the 3 most newsworthy developments relevant to small business — prefer to skip than pad with weak leads.
+
+### WebSearch queries
+
+Run these targeted searches to find Australian-specific angles:
 1. `new AI tools Australian small business 2026`
 2. `AI tools sole trader freelancer Australia reddit`
-3. `"The Rundown AI" OR "Ben's Bites" AI tools small business site:rundown.ai OR bensbites.co`
+3. `site:bensbites.co OR site:simonwillison.net AI tools small business productivity`
 4. `site:reddit.com/r/AusFinance OR site:reddit.com/r/smallbusiness AI tools invoicing payroll BAS`
 5. One search specific to a gap in existing coverage (e.g. if no article covers tradies + scheduling, search `AI scheduling tools tradies Australia`)
 
-**From the results, extract a shortlist of candidate topics:**
+**From all sources, extract a shortlist of candidate topics:**
 - Tool names that are real and currently available
 - Pain points that appear repeatedly (same complaint = real demand)
-- Any Australian-specific angle (ATO integration, ABN lookup, GST handling, Xero/MYOB compatibility)
+- Any Australian-specific angle (solo / small business)
+- Recent model or product launches that have practical small-business applications
 
 Discard: US-only tools, vague "AI will transform X" content, anything already covered by existing articles.
 

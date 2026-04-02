@@ -1,0 +1,8 @@
+Article: ai-invoice-reminders-late-payment-australia.html
+Generated: 2026-04-02
+Topic keyword: AI invoice reminders Australian freelancers late payment
+Why chosen: Distinct from the existing invoice generators article (which covers creating invoices) — this covers chasing payment, a separate and documented pain point. Hnry's payment data (2 days vs 10-day industry average) gives the article a concrete, credible hook.
+Sources consulted: Hnry invoicing product page (hnry.com.au/product/invoicing/), Hnry freelancer resources (6 tips for getting paid on time), Xero Central invoice reminders documentation, MYOB AI products press release (myob.com/au/press-releases), Airwallex best invoice software Australia 2026
+Content approach: Tool comparison covering Xero, MYOB, and Hnry reminder features, with practical setup guidance for Xero users.
+Content formats used: comparison table, prose sections per tool
+Related articles linked: ai-invoice-generators-australia-gst-abn

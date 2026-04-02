@@ -1,0 +1,8 @@
+Article: zapier-ai-automation-sole-trader-australia.html
+Generated: 2026-04-02
+Topic keyword: Zapier AI automation sole trader Australia no coding
+Why chosen: No existing coverage of Zapier on the site; automation for sole traders is a clear gap with strong search intent. Zapier's AI Copilot (natural language workflow builder) is a genuine recent development that lowers the barrier to entry significantly.
+Sources consulted: Zapier pricing page (zapier.com/pricing), Zapier AI agent guide (zapier.com/blog/zapier-agents-guide/), Zapier Xero integrations page (zapier.com/apps/xero/integrations), Zapier MYOB integrations page (zapier.com/apps/myob/integrations — confirmed no native integration)
+Content approach: How-to guide with five specific automation workflow examples, plus pricing breakdown and limitations.
+Content formats used: numbered steps (ol), tip box
+Related articles linked: budget-ai-stack-australian-small-business-2026

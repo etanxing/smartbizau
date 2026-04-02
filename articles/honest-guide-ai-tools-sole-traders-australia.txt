@@ -1,0 +1,8 @@
+Article: honest-guide-ai-tools-sole-traders-australia.html
+Generated: 2026-04-02
+Topic keyword: honest guide AI tools Australian sole traders does AI save time
+Why chosen: Counter-hype framing not covered anywhere on the site; builds trust with sceptical sole traders and differentiates the site from promotional AI content. Anchored in a credible recent study (Berkeley Haas/HBR, February 2026) rather than opinion.
+Sources consulted: Simon Willison blog post "AI Doesn't Reduce Work — It Intensifies It" (simonwillison.net, 9 February 2026), UC Berkeley Haas press release (newsroom.haas.berkeley.edu), Ye & Ranganathan study via Harvard Business Review (February 2026), MYOB Bi-Annual Business Monitor November 2025, Deloitte "AI Edge for Small Business" report (deloitte.com/au, November 2025)
+Content approach: Explainer anchored in research, with a practical three-question framework for evaluating AI tools, and specific categories of genuine time elimination vs scope expansion.
+Content formats used: numbered steps (ol), tip box
+Related articles linked: budget-ai-stack-australian-small-business-2026

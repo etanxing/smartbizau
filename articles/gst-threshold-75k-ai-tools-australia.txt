@@ -1,0 +1,8 @@
+Article: gst-threshold-75k-ai-tools-australia.html
+Generated: 2026-04-02
+Topic keyword: Australia GST threshold $75000 sole trader what happens
+Why chosen: High-consequence compliance topic with no existing coverage — sole traders misunderstanding the rolling 12-month GST threshold is a documented pain point, and the penalty exposure ($6,600+ base) gives the article urgency and utility.
+Sources consulted: ATO GST registration page (ato.gov.au/businesses-and-organisations/gst-excise-and-indirect-taxes/gst/registering-for-gst), gstcalculate.com.au threshold guide, Gartly Advisory GST registration guide 2026, Sleek ATO penalties 2026, ATO failure to meet tax obligations page, XBert product page, Xero Central invoice reminders documentation
+Content approach: Explainer/compliance guide with numbered action steps for what to do once you cross the threshold.
+Content formats used: numbered steps (ol), unordered lists, tip box
+Related articles linked: automate-bas-lodgement-ai-tools-2026
