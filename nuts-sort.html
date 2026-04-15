@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>螺母排序 · Nuts Sort Puzzle</title>
+<meta name="description" content="Free browser puzzle: sort the colored nuts onto matching bolts. A web port of the popular mobile 'Nuts Sort' game. 100 levels, offline play.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: radial-gradient(ellipse at top, #2a1a5e 0%, #1a0f3d 60%, #120829 100%);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+
+  /* ============ Header ============ */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    padding: 16px 20px 8px;
+    flex-shrink: 0;
+  }
+
+  .header-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.12);
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .header-btn:hover { background: rgba(255,255,255,0.2); }
+  .header-btn:active { transform: scale(0.92); }
+
+  .level-info { text-align: center; }
+  .level-info .difficulty {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 3px;
+    background: rgba(0,0,0,0.25);
+    padding: 3px 14px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+  .level-info h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* ============ Board ============ */
+  .board {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    gap: 18px 14px;
+    padding: 16px;
+    max-width: 500px;
+    width: 100%;
+    min-height: 0;
+  }
+
+  /* ============ Bolt ============ */
+  .bolt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.15s;
+    position: relative;
+  }
+  .bolt:active { transform: scale(0.97); }
+
+  .bolt-cap {
+    width: 22px;
+    height: 22px;
+    background: radial-gradient(circle at 35% 30%, #f0f0f0 0%, #c0c0c0 40%, #808080 100%);
+    border-radius: 50%;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 -2px 3px rgba(0,0,0,0.2);
+    margin-bottom: -6px;
+  }
+
+  .bolt-shaft {
+    width: 8px;
+    background: linear-gradient(90deg, #888 0%, #d0d0d0 30%, #f5f5f5 50%, #d0d0d0 70%, #888 100%);
+    position: relative;
+    z-index: 1;
+    border-radius: 1px;
+  }
+  .bolt-shaft.threaded {
+    background-image:
+      linear-gradient(90deg, #888 0%, #d0d0d0 30%, #f5f5f5 50%, #d0d0d0 70%, #888 100%),
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.18) 3px 4px);
+    background-blend-mode: multiply;
+  }
+
+  .bolt-nuts {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+    z-index: 5;
+  }
+
+  .bolt-base {
+    width: 80px;
+    height: 18px;
+    background: linear-gradient(180deg, #e0e0e0 0%, #a0a0a0 60%, #707070 100%);
+    border-radius: 50% / 60%;
+    margin-top: -6px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.45), inset 0 -2px 3px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 6;
+  }
+
+  /* ============ Nut ============ */
+  .nut-wrapper {
+    position: relative;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nut {
+    width: 72px;
+    height: 30px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: rgba(255,255,255,0.95);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  }
+
+  .nut-bg {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(14% 0%, 86% 0%, 100% 50%, 86% 100%, 14% 100%, 0% 50%);
+  }
+  .nut-bg-shadow {
+    z-index: 1;
+    transform: translateY(4px);
+    filter: brightness(0.55) blur(0.3px);
+    opacity: 0.85;
+  }
+  .nut-bg-main {
+    z-index: 2;
+  }
+  .nut-bg-hi {
+    z-index: 3;
+    clip-path: polygon(20% 8%, 80% 8%, 92% 35%, 80% 45%, 20% 45%, 8% 35%);
+    opacity: 0.35;
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    pointer-events: none;
+  }
+  .nut-symbol {
+    position: relative;
+    z-index: 4;
+    font-weight: 800;
+    pointer-events: none;
+  }
+
+  /* Selected bolt: lift top nut */
+  .bolt.selected .nut-wrapper:last-child {
+    transform: translateY(-18px);
+  }
+  .bolt.selected .nut-wrapper:last-child .nut {
+    filter: brightness(1.15) drop-shadow(0 4px 8px rgba(255,215,0,0.4));
+  }
+
+  /* Hint pulse */
+  .bolt.hint-target .bolt-base {
+    animation: hintPulse 0.8s ease-in-out 2;
+  }
+  @keyframes hintPulse {
+    0%, 100% { box-shadow: 0 6px 14px rgba(0,0,0,0.45), inset 0 -2px 3px rgba(0,0,0,0.3); }
+    50% { box-shadow: 0 0 22px rgba(255,215,0,0.9), 0 6px 14px rgba(0,0,0,0.45); }
+  }
+
+  /* Nut drop animation */
+  @keyframes nutDrop {
+    0% { transform: translateY(-40px); opacity: 0.6; }
+    70% { transform: translateY(4px); }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  .nut-arriving { animation: nutDrop 0.28s ease-out; }
+
+  /* ============ Footer ============ */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    padding: 14px 20px 24px;
+    width: 100%;
+    max-width: 500px;
+    flex-shrink: 0;
+  }
+
+  .footer-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: rgba(255,255,255,0.85);
+    font-size: 12px;
+    transition: transform 0.1s;
+    position: relative;
+  }
+  .footer-btn:active { transform: scale(0.92); }
+  .footer-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .footer-btn .icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+
+  .footer-btn.undo .icon { background: rgba(255,255,255,0.18); }
+  .footer-btn.hint .icon,
+  .footer-btn.add-bolt .icon {
+    background: linear-gradient(135deg, #FFE066 0%, #FFB01F 100%);
+    color: #6b3d00;
+  }
+  .footer-btn .badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #EF4444;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 2px solid #1a0f3d;
+  }
+
+  /* ============ Win overlay ============ */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+  .overlay.show { display: flex; }
+
+  .win-content {
+    text-align: center;
+    animation: winPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    padding: 20px;
+  }
+  @keyframes winPop {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.08); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .win-content .trophy {
+    font-size: 72px;
+    filter: drop-shadow(0 6px 12px rgba(255,215,0,0.5));
+    margin-bottom: 12px;
+  }
+  .win-content h2 {
+    font-size: 38px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #FFE066, #FFB01F);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .win-content p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 28px;
+  }
+  .win-btn {
+    padding: 14px 40px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #FFE066, #FFB01F);
+    color: #6b3d00;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255,176,31,0.5);
+    transition: transform 0.15s;
+    letter-spacing: 2px;
+  }
+  .win-btn:hover { transform: scale(1.05); }
+  .win-btn:active { transform: scale(0.97); }
+
+  /* Confetti */
+  .confetti-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99;
+    overflow: hidden;
+  }
+  .confetti {
+    position: absolute;
+    top: -10px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    to { top: 110vh; transform: rotate(720deg); }
+  }
+
+  /* ============ Level modal ============ */
+  .modal {
+    background: linear-gradient(180deg, #2a1860 0%, #1e1145 100%);
+    border-radius: 20px;
+    padding: 24px 20px;
+    max-width: 380px;
+    width: 92%;
+    max-height: 72vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+  .modal h2 {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 22px;
+  }
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    overflow-y: auto;
+    padding: 4px;
+    flex: 1;
+  }
+  .level-btn {
+    aspect-ratio: 1;
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .level-btn:hover { background: rgba(255,255,255,0.18); }
+  .level-btn:active { transform: scale(0.92); }
+  .level-btn.current {
+    border-color: #FFD700;
+    background: rgba(255,215,0,0.18);
+    box-shadow: 0 0 12px rgba(255,215,0,0.4);
+  }
+  .level-btn.completed {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: #22c55e;
+    color: #a7f3d0;
+  }
+  .level-btn.completed::after { content: "✓"; margin-left: 2px; font-size: 11px; }
+  .modal-close {
+    display: block;
+    margin: 14px auto 0;
+    padding: 10px 32px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.12);
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 420px) {
+    .nut { width: 62px; height: 26px; font-size: 13px; }
+    .bolt-base { width: 70px; height: 15px; }
+    .bolt-cap { width: 18px; height: 18px; }
+    .nut-wrapper { height: 26px; }
+    .board { gap: 14px 10px; padding: 12px; }
+    .level-info h1 { font-size: 22px; }
+    .footer { gap: 24px; }
+    .footer-btn .icon { width: 48px; height: 48px; font-size: 20px; }
+  }
+  @media (max-width: 340px) {
+    .nut { width: 54px; height: 24px; font-size: 12px; }
+    .bolt-base { width: 62px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="header-btn" id="levelSelectBtn" title="选择关卡" aria-label="选择关卡">☰</button>
+  <div class="level-info">
+    <div class="difficulty" id="difficulty">简单</div>
+    <h1 id="levelTitle">第 1 关</h1>
+  </div>
+  <button class="header-btn" id="restartBtn" title="重新开始" aria-label="重新开始">↻</button>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="footer">
+  <button class="footer-btn undo" id="undoBtn" title="撤销">
+    <div class="icon">↶</div>
+    <span>复原</span>
+  </button>
+  <button class="footer-btn hint" id="hintBtn" title="提示">
+    <div class="icon">💡</div>
+    <span>提示</span>
+    <span class="badge" id="hintBadge">6</span>
+  </button>
+  <button class="footer-btn add-bolt" id="addBoltBtn" title="新增空柱">
+    <div class="icon">＋</div>
+    <span>新增</span>
+  </button>
+</div>
+
+<div class="overlay" id="winOverlay">
+  <div class="confetti-container" id="confetti"></div>
+  <div class="win-content">
+    <div class="trophy">🏆</div>
+    <h2>过关！</h2>
+    <p id="winText">恭喜通过第 1 关</p>
+    <button class="win-btn" id="nextLevelBtn">下一关</button>
+  </div>
+</div>
+
+<div class="overlay" id="levelModal">
+  <div class="modal">
+    <h2>选择关卡</h2>
+    <div class="level-grid" id="levelGrid"></div>
+    <button class="modal-close" id="modalClose">关闭</button>
+  </div>
+</div>
+
+<script>
+// ===================================================
+//  螺母排序 - Nuts Sort Puzzle
+// ===================================================
+
+const COLORS = [
+  { bg: '#FFBE0B', dark: '#C48A00', symbol: '☀' },
+  { bg: '#FF5DA2', dark: '#C43378', symbol: '♛' },
+  { bg: '#EF4444', dark: '#B02A2A', symbol: '♥' },
+  { bg: '#3B82F6', dark: '#1E5BC6', symbol: '◆' },
+  { bg: '#22C55E', dark: '#178842', symbol: '♣' },
+  { bg: '#F97316', dark: '#B4520F', symbol: '⚡' },
+  { bg: '#A855F7', dark: '#7222BB', symbol: '★' },
+  { bg: '#14B8A6', dark: '#0B8478', symbol: '✿' },
+];
+
+const NUTS_PER_BOLT = 4;
+const MAX_LEVELS = 100;
+const HINTS_PER_LEVEL = 6;
+
+// ===================================================
+//  State
+// ===================================================
+let currentLevel = parseInt(localStorage.getItem('nutsSortLevel') || '1', 10);
+if (currentLevel < 1 || currentLevel > MAX_LEVELS) currentLevel = 1;
+
+let bolts = [];
+let history = [];
+let selectedBoltIndex = null;
+let addBoltUsed = false;
+let hintsLeft = HINTS_PER_LEVEL;
+let completedLevels = JSON.parse(localStorage.getItem('nutsSortCompleted') || '[]');
+let moves = 0;
+let isAnimating = false;
+
+// ===================================================
+//  Seeded RNG (LCG)
+// ===================================================
+function createRNG(seed) {
+  let s = (seed >>> 0) || 1;
+  return function() {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+    return s / 0x100000000;
+  };
+}
+
+// ===================================================
+//  Level generation
+// ===================================================
+function getLevelConfig(level) {
+  if (level <= 5)   return { numColors: 3, empties: 2, difficulty: '简单' };
+  if (level <= 15)  return { numColors: 4, empties: 2, difficulty: '简单' };
+  if (level <= 30)  return { numColors: 5, empties: 2, difficulty: '中等' };
+  if (level <= 55)  return { numColors: 6, empties: 2, difficulty: '中等' };
+  if (level <= 80)  return { numColors: 7, empties: 2, difficulty: '困难' };
+  return              { numColors: 8, empties: 2, difficulty: '困难' };
+}
+
+function isSolved(boltArray) {
+  return boltArray.every(b => {
+    if (b.length === 0) return true;
+    if (b.length !== NUTS_PER_BOLT) return false;
+    return b.every(n => n === b[0]);
+  });
+}
+
+function generateLevel(level) {
+  const config = getLevelConfig(level);
+  const { numColors, empties } = config;
+  let attempts = 0;
+  let result;
+
+  while (attempts < 20) {
+    const rng = createRNG(level * 7919 + 12345 + attempts * 101);
+    const nuts = [];
+    for (let i = 0; i < numColors; i++) {
+      for (let j = 0; j < NUTS_PER_BOLT; j++) nuts.push(i);
+    }
+    // Fisher-Yates shuffle
+    for (let i = nuts.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [nuts[i], nuts[j]] = [nuts[j], nuts[i]];
+    }
+    const newBolts = [];
+    let idx = 0;
+    for (let i = 0; i < numColors; i++) {
+      const b = [];
+      for (let j = 0; j < NUTS_PER_BOLT; j++) b.push(nuts[idx++]);
+      newBolts.push(b);
+    }
+    for (let i = 0; i < empties; i++) newBolts.push([]);
+
+    // Quality check: not already solved, not trivially one-move solved
+    if (!isSolved(newBolts)) {
+      let nearlySolved = 0;
+      for (const b of newBolts) {
+        if (b.length === NUTS_PER_BOLT && b.every(n => n === b[0])) nearlySolved++;
+      }
+      if (nearlySolved < numColors - 1) {
+        result = { bolts: newBolts, config };
+        break;
+      }
+    }
+    attempts++;
+  }
+  if (!result) {
+    // Fallback: simple distribution
+    const rng = createRNG(level);
+    const nuts = [];
+    for (let i = 0; i < numColors; i++) {
+      for (let j = 0; j < NUTS_PER_BOLT; j++) nuts.push(i);
+    }
+    for (let i = nuts.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [nuts[i], nuts[j]] = [nuts[j], nuts[i]];
+    }
+    const newBolts = [];
+    let idx = 0;
+    for (let i = 0; i < numColors; i++) {
+      const b = [];
+      for (let j = 0; j < NUTS_PER_BOLT; j++) b.push(nuts[idx++]);
+      newBolts.push(b);
+    }
+    for (let i = 0; i < empties; i++) newBolts.push([]);
+    result = { bolts: newBolts, config };
+  }
+  return result;
+}
+
+// ===================================================
+//  Game logic
+// ===================================================
+function canMove(fromIdx, toIdx) {
+  if (fromIdx === toIdx) return false;
+  if (!bolts[fromIdx] || !bolts[toIdx]) return false;
+  if (bolts[fromIdx].length === 0) return false;
+  if (bolts[toIdx].length >= NUTS_PER_BOLT) return false;
+  return true;
+}
+
+function doMove(fromIdx, toIdx) {
+  if (!canMove(fromIdx, toIdx)) return false;
+  const nut = bolts[fromIdx].pop();
+  bolts[toIdx].push(nut);
+  history.push({ from: fromIdx, to: toIdx, nut });
+  moves++;
+  return true;
+}
+
+function undoMove() {
+  if (history.length === 0) return false;
+  const { from, to } = history.pop();
+  const nut = bolts[to].pop();
+  bolts[from].push(nut);
+  moves = Math.max(0, moves - 1);
+  return true;
+}
+
+function checkWin() { return isSolved(bolts); }
+
+// ===================================================
+//  Hint: greedy best-move finder
+// ===================================================
+function findHint() {
+  let bestMove = null;
+  let bestScore = -Infinity;
+
+  for (let from = 0; from < bolts.length; from++) {
+    if (bolts[from].length === 0) continue;
+    const nut = bolts[from][bolts[from].length - 1];
+
+    for (let to = 0; to < bolts.length; to++) {
+      if (!canMove(from, to)) continue;
+      let score = 0;
+      const topOfTo = bolts[to].length > 0 ? bolts[to][bolts[to].length - 1] : null;
+
+      // Strongly prefer moving to same-color top
+      if (topOfTo === nut) score += 20;
+
+      // Bonus if target bolt is entirely same color
+      if (bolts[to].length > 0 && bolts[to].every(n => n === nut)) score += 10;
+
+      // Avoid moving from a pure-single-color bolt to empty
+      const sourcePureSingle = bolts[from].every(n => n === nut);
+      if (bolts[to].length === 0) {
+        if (sourcePureSingle) score -= 30;
+        else score += 1;
+      }
+
+      // Prefer unblocking a nut (rest of source is one color)
+      const restOfSource = bolts[from].slice(0, -1);
+      if (restOfSource.length > 0 && restOfSource.every(n => n === restOfSource[0])) {
+        score += 3;
+      }
+
+      // Avoid covering a matching nut
+      if (topOfTo !== null && topOfTo !== nut) score -= 2;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestMove = { from, to };
+      }
+    }
+  }
+  return bestMove;
+}
+
+// ===================================================
+//  Rendering
+// ===================================================
+function createNutEl(colorIdx, arriving) {
+  const color = COLORS[colorIdx] || COLORS[0];
+  const wrapper = document.createElement('div');
+  wrapper.className = 'nut-wrapper' + (arriving ? ' nut-arriving' : '');
+
+  const nut = document.createElement('div');
+  nut.className = 'nut';
+
+  const shadow = document.createElement('div');
+  shadow.className = 'nut-bg nut-bg-shadow';
+  shadow.style.background = color.dark;
+  nut.appendChild(shadow);
+
+  const main = document.createElement('div');
+  main.className = 'nut-bg nut-bg-main';
+  main.style.background =
+    `linear-gradient(180deg, ${color.bg} 0%, ${color.bg} 55%, ${color.dark} 100%)`;
+  nut.appendChild(main);
+
+  const hi = document.createElement('div');
+  hi.className = 'nut-bg nut-bg-hi';
+  nut.appendChild(hi);
+
+  const symbol = document.createElement('div');
+  symbol.className = 'nut-symbol';
+  symbol.textContent = color.symbol;
+  nut.appendChild(symbol);
+
+  wrapper.appendChild(nut);
+  return wrapper;
+}
+
+function render(arrivingBoltIdx = null) {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  const config = getLevelConfig(currentLevel);
+
+  bolts.forEach((bolt, boltIdx) => {
+    const boltEl = document.createElement('div');
+    boltEl.className = 'bolt';
+    if (selectedBoltIndex === boltIdx) boltEl.classList.add('selected');
+    boltEl.addEventListener('click', () => onBoltClick(boltIdx));
+
+    // Cap
+    const cap = document.createElement('div');
+    cap.className = 'bolt-cap';
+    boltEl.appendChild(cap);
+
+    // Shaft (height based on empty slots)
+    const emptySlots = NUTS_PER_BOLT - bolt.length;
+    const shaft = document.createElement('div');
+    shaft.className = 'bolt-shaft threaded';
+    shaft.style.height = Math.max(emptySlots * 30, 6) + 'px';
+    boltEl.appendChild(shaft);
+
+    // Nuts
+    const nutsContainer = document.createElement('div');
+    nutsContainer.className = 'bolt-nuts';
+    bolt.forEach((colorIdx, nutIdx) => {
+      const isArriving = arrivingBoltIdx === boltIdx && nutIdx === bolt.length - 1;
+      nutsContainer.appendChild(createNutEl(colorIdx, isArriving));
+    });
+    boltEl.appendChild(nutsContainer);
+
+    // Base
+    const base = document.createElement('div');
+    base.className = 'bolt-base';
+    boltEl.appendChild(base);
+
+    board.appendChild(boltEl);
+  });
+
+  document.getElementById('levelTitle').textContent = `第 ${currentLevel} 关`;
+  document.getElementById('difficulty').textContent = config.difficulty;
+  document.getElementById('undoBtn').disabled = history.length === 0;
+  document.getElementById('hintBadge').textContent = hintsLeft;
+  document.getElementById('hintBtn').disabled = hintsLeft <= 0;
+  document.getElementById('addBoltBtn').disabled = addBoltUsed;
+}
+
+// ===================================================
+//  Event handlers
+// ===================================================
+function onBoltClick(boltIdx) {
+  if (isAnimating) return;
+
+  if (selectedBoltIndex === null) {
+    if (bolts[boltIdx].length > 0) {
+      selectedBoltIndex = boltIdx;
+      render();
+    }
+  } else if (selectedBoltIndex === boltIdx) {
+    selectedBoltIndex = null;
+    render();
+  } else {
+    const fromIdx = selectedBoltIndex;
+    if (canMove(fromIdx, boltIdx)) {
+      doMove(fromIdx, boltIdx);
+      selectedBoltIndex = null;
+      render(boltIdx);
+      if (checkWin()) {
+        isAnimating = true;
+        setTimeout(() => { isAnimating = false; showWin(); }, 350);
+      }
+    } else {
+      if (bolts[boltIdx].length > 0) {
+        selectedBoltIndex = boltIdx;
+      } else {
+        selectedBoltIndex = null;
+      }
+      render();
+    }
+  }
+}
+
+function startLevel(level) {
+  currentLevel = Math.max(1, Math.min(MAX_LEVELS, level));
+  localStorage.setItem('nutsSortLevel', currentLevel.toString());
+
+  const { bolts: newBolts } = generateLevel(currentLevel);
+  bolts = newBolts.map(b => [...b]);
+  history = [];
+  selectedBoltIndex = null;
+  addBoltUsed = false;
+  hintsLeft = HINTS_PER_LEVEL;
+  moves = 0;
+  isAnimating = false;
+
+  render();
+  hideWin();
+}
+
+function showWin() {
+  if (!completedLevels.includes(currentLevel)) {
+    completedLevels.push(currentLevel);
+    localStorage.setItem('nutsSortCompleted', JSON.stringify(completedLevels));
+  }
+  document.getElementById('winText').textContent =
+    `恭喜通过第 ${currentLevel} 关！共 ${moves} 步`;
+  document.getElementById('winOverlay').classList.add('show');
+  spawnConfetti();
+}
+function hideWin() {
+  document.getElementById('winOverlay').classList.remove('show');
+  document.getElementById('confetti').innerHTML = '';
+}
+
+function spawnConfetti() {
+  const container = document.getElementById('confetti');
+  container.innerHTML = '';
+  const colors = ['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#FF69B4', '#FFA500', '#A855F7'];
+  for (let i = 0; i < 70; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.left = Math.random() * 100 + '%';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    const size = 6 + Math.random() * 10;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.animationDuration = (1.6 + Math.random() * 2.2) + 's';
+    el.style.animationDelay = (Math.random() * 0.8) + 's';
+    el.style.opacity = 0.75 + Math.random() * 0.25;
+    container.appendChild(el);
+  }
+}
+
+function showLevelSelect() {
+  const grid = document.getElementById('levelGrid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= MAX_LEVELS; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'level-btn';
+    if (i === currentLevel) btn.classList.add('current');
+    if (completedLevels.includes(i)) btn.classList.add('completed');
+    btn.textContent = i;
+    btn.addEventListener('click', () => {
+      startLevel(i);
+      hideLevelSelect();
+    });
+    grid.appendChild(btn);
+  }
+  document.getElementById('levelModal').classList.add('show');
+}
+function hideLevelSelect() {
+  document.getElementById('levelModal').classList.remove('show');
+}
+
+// ===================================================
+//  Button bindings
+// ===================================================
+document.getElementById('restartBtn').addEventListener('click', () => startLevel(currentLevel));
+
+document.getElementById('undoBtn').addEventListener('click', () => {
+  if (isAnimating) return;
+  if (undoMove()) {
+    selectedBoltIndex = null;
+    render();
+  }
+});
+
+document.getElementById('hintBtn').addEventListener('click', () => {
+  if (isAnimating || hintsLeft <= 0) return;
+  selectedBoltIndex = null;
+  const hint = findHint();
+  if (!hint) return;
+  hintsLeft--;
+
+  // Highlight the source bolt, then execute the move
+  selectedBoltIndex = hint.from;
+  render();
+  // Also mark target with hint-target class
+  const boltEls = document.querySelectorAll('.bolt');
+  if (boltEls[hint.to]) boltEls[hint.to].classList.add('hint-target');
+
+  isAnimating = true;
+  setTimeout(() => {
+    doMove(hint.from, hint.to);
+    selectedBoltIndex = null;
+    render(hint.to);
+    isAnimating = false;
+    if (checkWin()) setTimeout(showWin, 350);
+  }, 600);
+});
+
+document.getElementById('addBoltBtn').addEventListener('click', () => {
+  if (addBoltUsed || isAnimating) return;
+  bolts.push([]);
+  addBoltUsed = true;
+  selectedBoltIndex = null;
+  render();
+});
+
+document.getElementById('nextLevelBtn').addEventListener('click', () => {
+  const next = Math.min(currentLevel + 1, MAX_LEVELS);
+  startLevel(next);
+});
+
+document.getElementById('levelSelectBtn').addEventListener('click', showLevelSelect);
+document.getElementById('modalClose').addEventListener('click', hideLevelSelect);
+document.getElementById('levelModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) hideLevelSelect();
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    if (undoMove()) { selectedBoltIndex = null; render(); }
+  } else if (e.key === 'r' || e.key === 'R') {
+    startLevel(currentLevel);
+  } else if (e.key === 'Escape') {
+    selectedBoltIndex = null;
+    render();
+    hideLevelSelect();
+    hideWin();
+  } else if (e.key === 'h' || e.key === 'H') {
+    document.getElementById('hintBtn').click();
+  }
+});
+
+// Prevent double-tap zoom on iOS
+document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: false });
+
+// ===================================================
+//  Init
+// ===================================================
+startLevel(currentLevel);
+</script>
+
+</body>
+</html>
