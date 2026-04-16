@@ -616,23 +616,51 @@ function canMove(fromIdx, toIdx) {
   if (!bolts[fromIdx] || !bolts[toIdx]) return false;
   if (bolts[fromIdx].length === 0) return false;
   if (bolts[toIdx].length >= NUTS_PER_BOLT) return false;
+  // Destination must be empty or have same color on top as the moving nut
+  if (bolts[toIdx].length > 0) {
+    const topFrom = bolts[fromIdx][bolts[fromIdx].length - 1];
+    const topTo = bolts[toIdx][bolts[toIdx].length - 1];
+    if (topFrom !== topTo) return false;
+  }
   return true;
+}
+
+// How many consecutive same-color nuts sit on top of the source bolt
+function countTopStreak(boltIdx) {
+  const b = bolts[boltIdx];
+  if (!b || b.length === 0) return 0;
+  const top = b[b.length - 1];
+  let n = 0;
+  for (let i = b.length - 1; i >= 0; i--) {
+    if (b[i] === top) n++;
+    else break;
+  }
+  return n;
 }
 
 function doMove(fromIdx, toIdx) {
   if (!canMove(fromIdx, toIdx)) return false;
-  const nut = bolts[fromIdx].pop();
-  bolts[toIdx].push(nut);
-  history.push({ from: fromIdx, to: toIdx, nut });
+  const streak = countTopStreak(fromIdx);
+  const space = NUTS_PER_BOLT - bolts[toIdx].length;
+  const count = Math.min(streak, space);
+  if (count <= 0) return false;
+  const nut = bolts[fromIdx][bolts[fromIdx].length - 1];
+  for (let i = 0; i < count; i++) {
+    bolts[fromIdx].pop();
+    bolts[toIdx].push(nut);
+  }
+  history.push({ from: fromIdx, to: toIdx, nut, count });
   moves++;
   return true;
 }
 
 function undoMove() {
   if (history.length === 0) return false;
-  const { from, to } = history.pop();
-  const nut = bolts[to].pop();
-  bolts[from].push(nut);
+  const { from, to, count = 1 } = history.pop();
+  for (let i = 0; i < count; i++) {
+    const nut = bolts[to].pop();
+    bolts[from].push(nut);
+  }
   moves = Math.max(0, moves - 1);
   return true;
 }
@@ -654,12 +682,22 @@ function findHint() {
       if (!canMove(from, to)) continue;
       let score = 0;
       const topOfTo = bolts[to].length > 0 ? bolts[to][bolts[to].length - 1] : null;
+      const streak = countTopStreak(from);
+      const space = NUTS_PER_BOLT - bolts[to].length;
+      const movedCount = Math.min(streak, space);
 
       // Strongly prefer moving to same-color top
       if (topOfTo === nut) score += 20;
 
+      // Bonus for larger multi-nut moves (more efficient)
+      score += movedCount * 2;
+
       // Bonus if target bolt is entirely same color
       if (bolts[to].length > 0 && bolts[to].every(n => n === nut)) score += 10;
+
+      // Huge bonus if this move completes a bolt (solved 4 of same color)
+      if (bolts[to].length + movedCount === NUTS_PER_BOLT &&
+          bolts[to].every(n => n === nut)) score += 30;
 
       // Avoid moving from a pure-single-color bolt to empty
       const sourcePureSingle = bolts[from].every(n => n === nut);
@@ -668,8 +706,8 @@ function findHint() {
         else score += 1;
       }
 
-      // Prefer unblocking a nut (rest of source is one color)
-      const restOfSource = bolts[from].slice(0, -1);
+      // Prefer unblocking a nut (rest of source after move is one color)
+      const restOfSource = bolts[from].slice(0, bolts[from].length - streak);
       if (restOfSource.length > 0 && restOfSource.every(n => n === restOfSource[0])) {
         score += 3;
       }
@@ -689,10 +727,11 @@ function findHint() {
 // ===================================================
 //  Rendering
 // ===================================================
-function createNutEl(colorIdx, arriving) {
+function createNutEl(colorIdx, arriving, arriveDelay = 0) {
   const color = COLORS[colorIdx] || COLORS[0];
   const wrapper = document.createElement('div');
   wrapper.className = 'nut-wrapper' + (arriving ? ' nut-arriving' : '');
+  if (arriving && arriveDelay > 0) wrapper.style.animationDelay = arriveDelay + 'ms';
 
   const nut = document.createElement('div');
   nut.className = 'nut';
@@ -721,7 +760,7 @@ function createNutEl(colorIdx, arriving) {
   return wrapper;
 }
 
-function render(arrivingBoltIdx = null) {
+function render(arrivingBoltIdx = null, arrivingCount = 1) {
   const board = document.getElementById('board');
   board.innerHTML = '';
   const config = getLevelConfig(currentLevel);
@@ -748,8 +787,12 @@ function render(arrivingBoltIdx = null) {
     const nutsContainer = document.createElement('div');
     nutsContainer.className = 'bolt-nuts';
     bolt.forEach((colorIdx, nutIdx) => {
-      const isArriving = arrivingBoltIdx === boltIdx && nutIdx === bolt.length - 1;
-      nutsContainer.appendChild(createNutEl(colorIdx, isArriving));
+      // The last `arrivingCount` nuts on the arriving bolt animate in sequence
+      const arrivingStart = bolt.length - arrivingCount;
+      const isArriving =
+        arrivingBoltIdx === boltIdx && nutIdx >= arrivingStart;
+      const delay = isArriving ? (nutIdx - arrivingStart) * 70 : 0;
+      nutsContainer.appendChild(createNutEl(colorIdx, isArriving, delay));
     });
     boltEl.appendChild(nutsContainer);
 
@@ -786,12 +829,14 @@ function onBoltClick(boltIdx) {
   } else {
     const fromIdx = selectedBoltIndex;
     if (canMove(fromIdx, boltIdx)) {
+      const lastLen = bolts[boltIdx].length;
       doMove(fromIdx, boltIdx);
+      const movedCount = bolts[boltIdx].length - lastLen;
       selectedBoltIndex = null;
-      render(boltIdx);
+      render(boltIdx, movedCount);
       if (checkWin()) {
         isAnimating = true;
-        setTimeout(() => { isAnimating = false; showWin(); }, 350);
+        setTimeout(() => { isAnimating = false; showWin(); }, 350 + movedCount * 70);
       }
     } else {
       if (bolts[boltIdx].length > 0) {
@@ -906,11 +951,13 @@ document.getElementById('hintBtn').addEventListener('click', () => {
 
   isAnimating = true;
   setTimeout(() => {
+    const lastLen = bolts[hint.to].length;
     doMove(hint.from, hint.to);
+    const movedCount = bolts[hint.to].length - lastLen;
     selectedBoltIndex = null;
-    render(hint.to);
+    render(hint.to, movedCount);
     isAnimating = false;
-    if (checkWin()) setTimeout(showWin, 350);
+    if (checkWin()) setTimeout(showWin, 350 + movedCount * 70);
   }, 600);
 });
 
