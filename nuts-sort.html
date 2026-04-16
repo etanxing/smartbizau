@@ -154,7 +154,7 @@
     z-index: 6;
   }
 
-  /* ============ Nut (3D hex) ============ */
+  /* ============ Nut (3D SVG) ============ */
   .nut-wrapper {
     position: relative;
     height: 30px;
@@ -167,71 +167,20 @@
     width: 72px;
     height: 30px;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    color: rgba(255,255,255,0.95);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.45));
+    display: block;
+    filter: drop-shadow(0 2.5px 2.5px rgba(0,0,0,0.55));
   }
 
-  /* Side / rim: full hex, dark base — acts as the "depth" of the nut */
-  .nut-side {
-    position: absolute;
-    inset: 0;
-    clip-path: polygon(14% 0%, 86% 0%, 100% 50%, 86% 100%, 14% 100%, 0% 50%);
-    z-index: 1;
+  .nut svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
   }
 
-  /* Top face: narrower hex shifted upward, revealing the side
-     at the bottom for the 3D bevel illusion */
-  .nut-top {
-    position: absolute;
-    left: 5px;
-    right: 5px;
-    top: 2px;
-    bottom: 6px;
-    clip-path: polygon(13% 0%, 87% 0%, 100% 50%, 87% 100%, 13% 100%, 0% 50%);
-    z-index: 2;
-  }
-
-  /* Specular highlight across the upper portion of the top face */
-  .nut-shine {
-    position: absolute;
-    top: 3px;
-    left: 26%;
-    right: 26%;
-    height: 3px;
-    background: linear-gradient(180deg,
-      rgba(255,255,255,0.85) 0%,
-      rgba(255,255,255,0.15) 70%,
-      rgba(255,255,255,0) 100%);
-    border-radius: 50%;
-    filter: blur(0.6px);
-    z-index: 3;
-    pointer-events: none;
-  }
-
-  /* Dark bevel line where top face meets side (adds definition) */
-  .nut-bevel {
-    position: absolute;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    height: 2px;
-    background: rgba(0,0,0,0.35);
-    filter: blur(0.8px);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .nut-symbol {
-    position: relative;
-    z-index: 4;
-    font-weight: 800;
-    pointer-events: none;
-    transform: translateY(-2px); /* sit visually on top face */
+  .nut-symbol-txt {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Symbol",
+                 "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   }
 
   /* Selected bolt: lift top nut */
@@ -776,6 +725,8 @@ function findHint() {
 // ===================================================
 //  Rendering
 // ===================================================
+let _nutUid = 0;
+
 function createNutEl(colorIdx, arriving, arriveDelay = 0) {
   const color = COLORS[colorIdx] || COLORS[0];
   const wrapper = document.createElement('div');
@@ -785,34 +736,78 @@ function createNutEl(colorIdx, arriving, arriveDelay = 0) {
   const nut = document.createElement('div');
   nut.className = 'nut';
 
-  // Side / rim (depth)
-  const side = document.createElement('div');
-  side.className = 'nut-side';
-  side.style.background =
-    `linear-gradient(180deg, ${color.dark} 0%, ${color.dark} 45%, ${color.darker} 100%)`;
-  nut.appendChild(side);
+  // Unique IDs so multiple gradients don't collide
+  const uid = ++_nutUid;
+  const idT = `t${uid}`, idR = `r${uid}`, idH = `h${uid}`, idS = `s${uid}`;
 
-  // Top face with multi-stop gradient for metallic/plastic 3D look
-  const top = document.createElement('div');
-  top.className = 'nut-top';
-  top.style.background =
-    `linear-gradient(165deg, ${color.light} 0%, ${color.main} 45%, ${color.main} 70%, ${color.dark} 100%)`;
-  nut.appendChild(top);
+  // Build a 3D hexagonal nut: an outer hex (rim/side) with an inset
+  // top face. The top face is offset inward more at the bottom than
+  // at the top, so the exposed rim at the bottom reads as "depth".
+  // viewBox 0 0 80 32 — stretched to fit the .nut box (72×30).
+  nut.innerHTML = `
+<svg viewBox="0 0 80 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Rim / side gradient (darker, vertical) -->
+    <linearGradient id="${idR}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="${color.dark}"/>
+      <stop offset="55%"  stop-color="${color.dark}"/>
+      <stop offset="100%" stop-color="${color.darker}"/>
+    </linearGradient>
+    <!-- Top face gradient: light → main → dark, diagonal for lit-from-UL -->
+    <linearGradient id="${idT}" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%"   stop-color="${color.light}"/>
+      <stop offset="35%"  stop-color="${color.main}"/>
+      <stop offset="75%"  stop-color="${color.main}"/>
+      <stop offset="100%" stop-color="${color.dark}"/>
+    </linearGradient>
+    <!-- Specular highlight (bright spot, upper-left of top face) -->
+    <radialGradient id="${idH}" cx="0.30" cy="0.22" r="0.55">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="55%"  stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Bottom shadow inside top face for depth -->
+    <linearGradient id="${idS}" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+      <stop offset="70%"  stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
 
-  // Dark bevel line where top meets side
-  const bevel = document.createElement('div');
-  bevel.className = 'nut-bevel';
-  nut.appendChild(bevel);
+  <!-- OUTER RIM HEX (full silhouette, dark — acts as the visible side edge) -->
+  <path d="M 12 0 L 68 0 L 80 16 L 68 32 L 12 32 L 0 16 Z"
+        fill="url(#${idR})"/>
 
-  // Specular highlight (bright crescent on top face)
-  const shine = document.createElement('div');
-  shine.className = 'nut-shine';
-  nut.appendChild(shine);
+  <!-- TOP FACE (inset hex; inset more at bottom to reveal rim below) -->
+  <path d="M 14 1.5 L 66 1.5 L 76 15 L 66 27 L 14 27 L 4 15 Z"
+        fill="url(#${idT})"/>
 
-  const symbol = document.createElement('div');
-  symbol.className = 'nut-symbol';
-  symbol.textContent = color.symbol;
-  nut.appendChild(symbol);
+  <!-- Soft shadow inside top face near the bottom (enhances depth) -->
+  <path d="M 14 1.5 L 66 1.5 L 76 15 L 66 27 L 14 27 L 4 15 Z"
+        fill="url(#${idS})"/>
+
+  <!-- Specular highlight overlay on top face (upper-left) -->
+  <path d="M 14 1.5 L 66 1.5 L 76 15 L 66 27 L 14 27 L 4 15 Z"
+        fill="url(#${idH})"/>
+
+  <!-- Bright bevel along the upper two edges of the top face -->
+  <path d="M 14.5 2 L 65.5 2 L 75 15" stroke="rgba(255,255,255,0.6)"
+        stroke-width="1" stroke-linecap="round" fill="none"/>
+
+  <!-- Dark bevel along the lower two edges of the top face -->
+  <path d="M 14.5 26.5 L 65.5 26.5 L 75 15" stroke="rgba(0,0,0,0.35)"
+        stroke-width="0.9" stroke-linecap="round" fill="none"/>
+
+  <!-- Subtle bottom ground shadow on outer rim -->
+  <path d="M 13 31.3 L 67 31.3 L 79 16.5" stroke="rgba(0,0,0,0.35)"
+        stroke-width="0.9" stroke-linecap="round" fill="none"/>
+
+  <!-- Symbol centered on top face -->
+  <text x="40" y="15" text-anchor="middle" dominant-baseline="central"
+        class="nut-symbol-txt" font-size="13" font-weight="900"
+        fill="rgba(255,255,255,0.97)"
+        style="paint-order: stroke; stroke: rgba(0,0,0,0.35); stroke-width: 0.4;">${color.symbol}</text>
+</svg>`;
 
   wrapper.appendChild(nut);
   return wrapper;
