@@ -101,31 +101,46 @@
     height: 22px;
     background: radial-gradient(circle at 35% 30%, #f0f0f0 0%, #c0c0c0 40%, #808080 100%);
     border-radius: 50%;
-    position: relative;
     z-index: 10;
     box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 -2px 3px rgba(0,0,0,0.2);
-    margin-bottom: -6px;
+    margin-bottom: -4px;
+    position: relative;
+  }
+
+  /* Fixed-height post that holds shaft + nuts. Total height is
+     always NUTS_PER_BOLT * nut-height (= 120px) so empty and full
+     bolts line up perfectly. */
+  .bolt-post {
+    position: relative;
+    width: 80px;
+    height: 120px;
+    display: flex;
+    flex-direction: column-reverse; /* nuts pile up from bottom */
+    align-items: center;
+    justify-content: flex-start;
   }
 
   .bolt-shaft {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 8px;
-    background: linear-gradient(90deg, #888 0%, #d0d0d0 30%, #f5f5f5 50%, #d0d0d0 70%, #888 100%);
-    position: relative;
+    height: 100%;
     z-index: 1;
     border-radius: 1px;
-  }
-  .bolt-shaft.threaded {
     background-image:
       linear-gradient(90deg, #888 0%, #d0d0d0 30%, #f5f5f5 50%, #d0d0d0 70%, #888 100%),
       repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.18) 3px 4px);
     background-blend-mode: multiply;
+    box-shadow: inset -1px 0 1px rgba(0,0,0,0.3);
   }
 
   .bolt-nuts {
-    display: flex;
-    flex-direction: column-reverse;
     position: relative;
     z-index: 5;
+    display: flex;
+    flex-direction: column-reverse;
   }
 
   .bolt-base {
@@ -133,13 +148,13 @@
     height: 18px;
     background: linear-gradient(180deg, #e0e0e0 0%, #a0a0a0 60%, #707070 100%);
     border-radius: 50% / 60%;
-    margin-top: -6px;
+    margin-top: -4px;
     box-shadow: 0 6px 14px rgba(0,0,0,0.45), inset 0 -2px 3px rgba(0,0,0,0.3);
     position: relative;
     z-index: 6;
   }
 
-  /* ============ Nut ============ */
+  /* ============ Nut (3D hex) ============ */
   .nut-wrapper {
     position: relative;
     height: 30px;
@@ -157,35 +172,66 @@
     justify-content: center;
     font-size: 14px;
     color: rgba(255,255,255,0.95);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.45));
   }
 
-  .nut-bg {
+  /* Side / rim: full hex, dark base — acts as the "depth" of the nut */
+  .nut-side {
     position: absolute;
     inset: 0;
     clip-path: polygon(14% 0%, 86% 0%, 100% 50%, 86% 100%, 14% 100%, 0% 50%);
-  }
-  .nut-bg-shadow {
     z-index: 1;
-    transform: translateY(4px);
-    filter: brightness(0.55) blur(0.3px);
-    opacity: 0.85;
   }
-  .nut-bg-main {
+
+  /* Top face: narrower hex shifted upward, revealing the side
+     at the bottom for the 3D bevel illusion */
+  .nut-top {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    top: 2px;
+    bottom: 6px;
+    clip-path: polygon(13% 0%, 87% 0%, 100% 50%, 87% 100%, 13% 100%, 0% 50%);
     z-index: 2;
   }
-  .nut-bg-hi {
+
+  /* Specular highlight across the upper portion of the top face */
+  .nut-shine {
+    position: absolute;
+    top: 3px;
+    left: 26%;
+    right: 26%;
+    height: 3px;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.85) 0%,
+      rgba(255,255,255,0.15) 70%,
+      rgba(255,255,255,0) 100%);
+    border-radius: 50%;
+    filter: blur(0.6px);
     z-index: 3;
-    clip-path: polygon(20% 8%, 80% 8%, 92% 35%, 80% 45%, 20% 45%, 8% 35%);
-    opacity: 0.35;
-    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0));
     pointer-events: none;
   }
+
+  /* Dark bevel line where top face meets side (adds definition) */
+  .nut-bevel {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    height: 2px;
+    background: rgba(0,0,0,0.35);
+    filter: blur(0.8px);
+    z-index: 2;
+    pointer-events: none;
+  }
+
   .nut-symbol {
     position: relative;
     z-index: 4;
     font-weight: 800;
     pointer-events: none;
+    transform: translateY(-2px); /* sit visually on top face */
   }
 
   /* Selected bolt: lift top nut */
@@ -421,6 +467,7 @@
     .bolt-base { width: 70px; height: 15px; }
     .bolt-cap { width: 18px; height: 18px; }
     .nut-wrapper { height: 26px; }
+    .bolt-post { width: 70px; height: 104px; } /* 4 × 26 */
     .board { gap: 14px 10px; padding: 12px; }
     .level-info h1 { font-size: 22px; }
     .footer { gap: 24px; }
@@ -428,6 +475,8 @@
   }
   @media (max-width: 340px) {
     .nut { width: 54px; height: 24px; font-size: 12px; }
+    .nut-wrapper { height: 24px; }
+    .bolt-post { width: 62px; height: 96px; } /* 4 × 24 */
     .bolt-base { width: 62px; }
   }
 </style>
@@ -485,14 +534,14 @@
 // ===================================================
 
 const COLORS = [
-  { bg: '#FFBE0B', dark: '#C48A00', symbol: '☀' },
-  { bg: '#FF5DA2', dark: '#C43378', symbol: '♛' },
-  { bg: '#EF4444', dark: '#B02A2A', symbol: '♥' },
-  { bg: '#3B82F6', dark: '#1E5BC6', symbol: '◆' },
-  { bg: '#22C55E', dark: '#178842', symbol: '♣' },
-  { bg: '#F97316', dark: '#B4520F', symbol: '⚡' },
-  { bg: '#A855F7', dark: '#7222BB', symbol: '★' },
-  { bg: '#14B8A6', dark: '#0B8478', symbol: '✿' },
+  { main: '#FFBE0B', light: '#FFE066', dark: '#C48A00', darker: '#7E5800', symbol: '☀' },
+  { main: '#FF5DA2', light: '#FF95BF', dark: '#C43378', darker: '#831E50', symbol: '♛' },
+  { main: '#EF4444', light: '#FF7E7E', dark: '#B02A2A', darker: '#771919', symbol: '♥' },
+  { main: '#3B82F6', light: '#7EA9FF', dark: '#1E5BC6', darker: '#123E88', symbol: '◆' },
+  { main: '#22C55E', light: '#5FDE8A', dark: '#178842', darker: '#0C5A2B', symbol: '♣' },
+  { main: '#F97316', light: '#FFA66A', dark: '#B4520F', darker: '#72340A', symbol: '⚡' },
+  { main: '#A855F7', light: '#CA94FF', dark: '#7222BB', darker: '#4A1479', symbol: '★' },
+  { main: '#14B8A6', light: '#4FD9CB', dark: '#0B8478', darker: '#06564D', symbol: '✿' },
 ];
 
 const NUTS_PER_BOLT = 4;
@@ -736,20 +785,29 @@ function createNutEl(colorIdx, arriving, arriveDelay = 0) {
   const nut = document.createElement('div');
   nut.className = 'nut';
 
-  const shadow = document.createElement('div');
-  shadow.className = 'nut-bg nut-bg-shadow';
-  shadow.style.background = color.dark;
-  nut.appendChild(shadow);
+  // Side / rim (depth)
+  const side = document.createElement('div');
+  side.className = 'nut-side';
+  side.style.background =
+    `linear-gradient(180deg, ${color.dark} 0%, ${color.dark} 45%, ${color.darker} 100%)`;
+  nut.appendChild(side);
 
-  const main = document.createElement('div');
-  main.className = 'nut-bg nut-bg-main';
-  main.style.background =
-    `linear-gradient(180deg, ${color.bg} 0%, ${color.bg} 55%, ${color.dark} 100%)`;
-  nut.appendChild(main);
+  // Top face with multi-stop gradient for metallic/plastic 3D look
+  const top = document.createElement('div');
+  top.className = 'nut-top';
+  top.style.background =
+    `linear-gradient(165deg, ${color.light} 0%, ${color.main} 45%, ${color.main} 70%, ${color.dark} 100%)`;
+  nut.appendChild(top);
 
-  const hi = document.createElement('div');
-  hi.className = 'nut-bg nut-bg-hi';
-  nut.appendChild(hi);
+  // Dark bevel line where top meets side
+  const bevel = document.createElement('div');
+  bevel.className = 'nut-bevel';
+  nut.appendChild(bevel);
+
+  // Specular highlight (bright crescent on top face)
+  const shine = document.createElement('div');
+  shine.className = 'nut-shine';
+  nut.appendChild(shine);
 
   const symbol = document.createElement('div');
   symbol.className = 'nut-symbol';
@@ -771,19 +829,21 @@ function render(arrivingBoltIdx = null, arrivingCount = 1) {
     if (selectedBoltIndex === boltIdx) boltEl.classList.add('selected');
     boltEl.addEventListener('click', () => onBoltClick(boltIdx));
 
-    // Cap
+    // Cap (sits on top of the post)
     const cap = document.createElement('div');
     cap.className = 'bolt-cap';
     boltEl.appendChild(cap);
 
-    // Shaft (height based on empty slots)
-    const emptySlots = NUTS_PER_BOLT - bolt.length;
-    const shaft = document.createElement('div');
-    shaft.className = 'bolt-shaft threaded';
-    shaft.style.height = Math.max(emptySlots * 30, 6) + 'px';
-    boltEl.appendChild(shaft);
+    // Fixed-height post container (always same height regardless of fill)
+    const post = document.createElement('div');
+    post.className = 'bolt-post';
 
-    // Nuts
+    // Shaft spans full post height, positioned behind the nuts
+    const shaft = document.createElement('div');
+    shaft.className = 'bolt-shaft';
+    post.appendChild(shaft);
+
+    // Nuts pile up from the bottom of the post
     const nutsContainer = document.createElement('div');
     nutsContainer.className = 'bolt-nuts';
     bolt.forEach((colorIdx, nutIdx) => {
@@ -794,9 +854,11 @@ function render(arrivingBoltIdx = null, arrivingCount = 1) {
       const delay = isArriving ? (nutIdx - arrivingStart) * 70 : 0;
       nutsContainer.appendChild(createNutEl(colorIdx, isArriving, delay));
     });
-    boltEl.appendChild(nutsContainer);
+    post.appendChild(nutsContainer);
 
-    // Base
+    boltEl.appendChild(post);
+
+    // Base (sits under the post)
     const base = document.createElement('div');
     base.className = 'bolt-base';
     boltEl.appendChild(base);
