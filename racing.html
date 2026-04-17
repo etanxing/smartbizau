@@ -71,9 +71,10 @@ const MAX_SPEED = 320;
 const ACCEL = 85;
 const BRAKE = 140;
 const DECEL = 25;
-const OFF_ROAD_DECEL = 120;
+const OFF_ROAD_DECEL = 55;   // was 120 — softer so W can still gain speed off-road
+const OFF_ROAD_MAX = 120;    // cap speed to 120 km/h when off road
 const STEER = 2.8;
-const CENTRIFUGAL = 0.4;
+const CENTRIFUGAL = 0.22;    // was 0.4 — less aggressive
 
 // ---- State ----
 let state = 'title';
@@ -544,8 +545,9 @@ function update(dt) {
 
   if (speed > maxSpeedReached) maxSpeedReached = speed;
 
-  // Steering (playerX is normalized: -1..1 = road edges)
-  const steerPower = STEER * dt * (speed / MAX_SPEED);
+  // Steering — always responsive (0.35 base + 0.65 scaled by speed)
+  // so the car can still steer back onto the road when crawling off-road.
+  const steerPower = STEER * dt * (0.35 + 0.65 * speed / MAX_SPEED);
   if (isKey('left'))  playerX -= steerPower;
   if (isKey('right')) playerX += steerPower;
 
@@ -558,9 +560,11 @@ function update(dt) {
   // Clamp to ±1.8 (slightly beyond road edge)
   playerX = Math.max(-1.8, Math.min(1.8, playerX));
 
-  // Off-road penalty
+  // Off-road penalty: cap speed, decay toward cap, but allow low-speed motion
   if (Math.abs(playerX) > 1.0) {
-    speed = Math.max(0, speed - OFF_ROAD_DECEL * dt);
+    if (speed > OFF_ROAD_MAX) {
+      speed = Math.max(OFF_ROAD_MAX, speed - OFF_ROAD_DECEL * dt);
+    }
   }
 
   // Move forward
